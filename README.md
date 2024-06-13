@@ -104,7 +104,7 @@ See the [examples/](examples/) folder and [Cloud Platform User Guide](https://us
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.2.5 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.31.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | 2.25.2 |
 | <a name="requirement_opensearch"></a> [opensearch](#requirement\_opensearch) | 2.2.1 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 2.0.0 |
@@ -113,7 +113,7 @@ See the [examples/](examples/) folder and [Cloud Platform User Guide](https://us
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.31.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0.0 |
 | <a name="provider_opensearch.app_logs"></a> [opensearch.app\_logs](#provider\_opensearch.app\_logs) | 2.2.1 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 2.0.0 |
 
