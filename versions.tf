@@ -7,7 +7,7 @@ terraform {
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "2.25.2"
+      version = "2.32.0"
     }
     opensearch = {
       source  = "opensearch-project/opensearch"
