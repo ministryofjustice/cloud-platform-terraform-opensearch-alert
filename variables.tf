@@ -42,6 +42,12 @@ variable "integration_secret_key" {
 # Alert Config #
 ################
 
+variable "alert_type" {
+  description = "How you want the alert to be configured. Available options: 'slack', 'webhook'"
+  default     = "slack"
+  type        = string
+}
+
 variable "environment_name" {
   description = "Environment name"
   type        = string
