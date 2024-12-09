@@ -98,80 +98,80 @@ resource "opensearch_channel_configuration" "slack_alarm" {
 # OpenSearch Alert Configuration #
 ##################################
 
-locals {
-  opensearch_alert = jsonencode(
-    {
-      "owner" : "alerting",
-      "monitor_type" : "query_level_monitor",
-      "data_sources" : {
-        "alerts_history_index" : ".opendistro-alerting-alert-history-write",
-        "alerts_history_index_pattern" : "<.opendistro-alerting-alert-history-{now/d}-1>",
-        "alerts_index" : ".opendistro-alerting-alerts",
-        "findings_enabled" : false,
-        "findings_index" : ".opensearch-alerting-finding-history-write",
-        "findings_index_pattern" : "<.opensearch-alerting-finding-history-{now/d}-1>",
-        "query_index" : ".opensearch-alerting-queries",
-        "query_index_mappings_by_type" : {}
-      },
-      "name" : "${var.environment_name}-${var.opensearch_alert_name}-${local.identifier}",
-      "type" : "monitor",
-      "monitor_type" : "query_level_monitor",
-      "enabled" : var.opensearch_alert_enabled,
-      "schedule" : {
-        "period" : {
-          "interval" : var.monitor_period_interval,
-          "unit" : var.monitor_period_unit
-        }
-      },
-      "inputs" : [
-        {
-          "search" : {
-            "indices" : var.index,
-            "query" : jsondecode(var.alert_query)
-          }
-        }
-      ],
-      "triggers" : [
-        {
-          "query_level_trigger" : {
-            "id" : "trigger-id-${local.identifier}", # to prevent change in terraform plan
-            "name" : "${var.environment_name}-${var.trigger_name}-${local.identifier}", 
-            "severity" : var.serverity,
-            "condition" : {
-              "script" : {
-                "source" : var.query_source,
-                "lang" : "painless"
-              }
-            },
-            "actions" : [
-              {
-                "id" : "action-id-${local.identifier}", # to prevent change in terraform plan
-                "name" : var.action_name,
-                "destination_id" : opensearch_channel_configuration.slack_alarm.id,
-                "message_template" : {
-                  "source" : var.slack_message_template,
-                  "lang" : "mustache"
-                },
-                "throttle_enabled" : var.alert_throttle_enabled,
-                "subject_template" : {
-                  "source" : var.slack_message_subject,
-                  "lang" : "mustache"
-                },
-                "throttle" : {
-                  "value" : var.throttle_value,
-                  "unit" : var.throttle_unit
-                }
-              }
-            ]
-          }
-        }
-      ]
-    }
-  )
-}
+# locals {
+#   opensearch_alert = jsonencode(
+#     {
+#       "owner" : "alerting",
+#       "monitor_type" : "query_level_monitor",
+#       "data_sources" : {
+#         "alerts_history_index" : ".opendistro-alerting-alert-history-write",
+#         "alerts_history_index_pattern" : "<.opendistro-alerting-alert-history-{now/d}-1>",
+#         "alerts_index" : ".opendistro-alerting-alerts",
+#         "findings_enabled" : false,
+#         "findings_index" : ".opensearch-alerting-finding-history-write",
+#         "findings_index_pattern" : "<.opensearch-alerting-finding-history-{now/d}-1>",
+#         "query_index" : ".opensearch-alerting-queries",
+#         "query_index_mappings_by_type" : {}
+#       },
+#       "name" : "${var.environment_name}-${var.opensearch_alert_name}-${local.identifier}",
+#       "type" : "monitor",
+#       "monitor_type" : "query_level_monitor",
+#       "enabled" : var.opensearch_alert_enabled,
+#       "schedule" : {
+#         "period" : {
+#           "interval" : var.monitor_period_interval,
+#           "unit" : var.monitor_period_unit
+#         }
+#       },
+#       "inputs" : [
+#         {
+#           "search" : {
+#             "indices" : var.index,
+#             "query" : jsondecode(var.alert_query)
+#           }
+#         }
+#       ],
+#       "triggers" : [
+#         {
+#           "query_level_trigger" : {
+#             "id" : "trigger-id-${local.identifier}", # to prevent change in terraform plan
+#             "name" : "${var.environment_name}-${var.trigger_name}-${local.identifier}", 
+#             "severity" : var.serverity,
+#             "condition" : {
+#               "script" : {
+#                 "source" : var.query_source,
+#                 "lang" : "painless"
+#               }
+#             },
+#             "actions" : [
+#               {
+#                 "id" : "action-id-${local.identifier}", # to prevent change in terraform plan
+#                 "name" : var.action_name,
+#                 "destination_id" : opensearch_channel_configuration.slack_alarm.id,
+#                 "message_template" : {
+#                   "source" : var.slack_message_template,
+#                   "lang" : "mustache"
+#                 },
+#                 "throttle_enabled" : var.alert_throttle_enabled,
+#                 "subject_template" : {
+#                   "source" : var.slack_message_subject,
+#                   "lang" : "mustache"
+#                 },
+#                 "throttle" : {
+#                   "value" : var.throttle_value,
+#                   "unit" : var.throttle_unit
+#                 }
+#               }
+#             ]
+#           }
+#         }
+#       ]
+#     }
+#   )
+# }
 
-resource "opensearch_monitor" "opensearch_alert" {
-  provider   = opensearch.app_logs
-  body       = local.opensearch_alert
-  depends_on = [opensearch_channel_configuration.slack_alarm]
-}
+# resource "opensearch_monitor" "opensearch_alert" {
+#   provider   = opensearch.app_logs
+#   body       = local.opensearch_alert
+#   depends_on = [opensearch_channel_configuration.slack_alarm]
+# }
