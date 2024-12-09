@@ -32,6 +32,12 @@ variable "secret_key" {
   type        = string
 }
 
+variable "integration_secret_key" {
+  description = "Secret key for Integration Key"
+  default     = "integration_key"
+  type        = string
+}
+
 ################
 # Alert Config #
 ################

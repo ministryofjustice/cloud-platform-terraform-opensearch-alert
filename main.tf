@@ -69,11 +69,29 @@ locals {
       }
     }
   )
+  custom_webhook = jsonencode(
+    {
+      "config_id" : "webhook-config-id-${local.identifier}", # to prevent change in terraform plan
+      "config" : {
+        "name" : "${var.environment_name}-${var.slack_channel_name}-${local.identifier}",
+        "description" : var.slack_channel_name_description,
+        "config_type" : "webhook",
+        "is_enabled" : true,
+        "webhook" : {
+          "url" : jsondecode(data.aws_secretsmanager_secret_version.slack_webhook_url.secret_string)["${var.secret_key}"]
+          "headers": {
+            "Authorization": jsondecode(data.aws_secretsmanager_secret_version.slack_webhook_url.secret_string)["${var.integration_secret_key}"],
+            "Content-Type": "application/json"
+          }
+        }
+      }
+    }
+  )
 }
 
 resource "opensearch_channel_configuration" "slack_alarm" {
   provider = opensearch.app_logs
-  body     = local.slack_alarm
+  body     = var.alert_type == "webhook" ? local.custom_webhook : local.slack_alarm
 }
 
 ##################################
