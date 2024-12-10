@@ -78,11 +78,7 @@ locals {
         "config_type" : "webhook",
         "is_enabled" : true,
         "webhook" : {
-          "url" : jsondecode(data.aws_secretsmanager_secret_version.slack_webhook_url.secret_string)["${var.secret_key}"],
-          "headers": {
-            "Authorization": jsondecode(data.aws_secretsmanager_secret_version.slack_webhook_url.secret_string)["${var.integration_secret_key}"],
-            "Content-Type": "application/json"
-          }
+          "url" : jsondecode(data.aws_secretsmanager_secret_version.slack_webhook_url.secret_string)["${var.secret_key}"]
         }
       }
     }
